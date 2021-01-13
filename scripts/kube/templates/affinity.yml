@@ -1,0 +1,26 @@
+
+affinity = {
+    'nodeAffinity': {
+        'requiredDuringSchedulingIgnoredDuringExecution': [
+            {
+                'weight': 1,
+                'preference': {
+                    'matchExpressions': [
+                        {
+                            'key': 'lifecycle',
+                            'operator': 'In',
+                            'values': ['Ec2Spot']
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}
+
+tolerations = [{
+    'key': 'spotInstance',
+    'operator': 'Equal',
+    'value': 'true',
+    'effect': 'PreferNoSchedule'
+}]
