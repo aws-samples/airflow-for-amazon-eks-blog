@@ -98,7 +98,7 @@ if [[ "${TRAVIS}" == true ]]; then
   sudo chown -R travis.travis $HOME/.kube $HOME/.minikube
 fi
 
-kubectl delete -f $DIRNAME/postgres.yaml
+# kubectl delete -f $DIRNAME/postgres.yaml
 kubectl delete -f $BUILD_DIRNAME/airflow.yaml
 kubectl delete -f $DIRNAME/secrets.yaml
 kubectl delete -f $DIRNAME/namespace.yaml
@@ -120,7 +120,7 @@ set -e
 kubectl apply -f $DIRNAME/namespace.yaml
 kubectl apply -f $DIRNAME/secrets.yaml
 kubectl apply -f $BUILD_DIRNAME/configmaps.yaml
-kubectl apply -f $DIRNAME/postgres.yaml
+# kubectl apply -f $DIRNAME/postgres.yaml
 kubectl apply -f $DIRNAME/volumes.yaml
 kubectl apply -f $BUILD_DIRNAME/airflow.yaml
 
@@ -132,7 +132,7 @@ do
   PODS=$(kubectl get pods -n airflow| awk 'NR>1 {print $0}')
   echo "$PODS"
   NUM_AIRFLOW_READY=$(echo $PODS | grep airflow | awk '{print $2}' | grep -E '([0-9])\/(\1)' | wc -l | xargs)
-  NUM_POSTGRES_READY=$(echo $PODS | grep postgres | awk '{print $2}' | grep -E '([0-9])\/(\1)' | wc -l | xargs)
+  # NUM_POSTGRES_READY=$(echo $PODS | grep postgres | awk '{print $2}' | grep -E '([0-9])\/(\1)' | wc -l | xargs)
   if [ "$NUM_AIRFLOW_READY" == "1" ] && [ "$NUM_POSTGRES_READY" == "1" ]; then
     PODS_ARE_READY=1
     break

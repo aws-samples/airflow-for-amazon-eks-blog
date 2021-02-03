@@ -89,21 +89,21 @@ spec:
         args:
           - "-cx"
           - "./tmp/airflow-test-env-init.sh "
-      affinity:
-        nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 1
-            preference:
-              matchExpressions:
-              - key: lifecycle
-                operator: In
-                values:
-                - Ec2Spot
-      tolerations:
-      - key: "spotInstance"
-        operator: "Equal"
-        value: "true"
-        effect: "PreferNoSchedule"
+      # affinity:
+      #   nodeAffinity:
+      #     preferredDuringSchedulingIgnoredDuringExecution:
+      #     - weight: 1
+      #       preference:
+      #         matchExpressions:
+      #         - key: lifecycle
+      #           operator: In
+      #           values:
+      #           - Ec2Spot
+      # tolerations:
+      # - key: "spotInstance"
+      #   operator: "Equal"
+      #   value: "true"
+      #   effect: "PreferNoSchedule"
       containers:
       - name: webserver
         image: public.ecr.aws/d6j6r1l2/airflow-aws-image:latest

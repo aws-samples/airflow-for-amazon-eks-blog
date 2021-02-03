@@ -50,7 +50,7 @@ spec:
   storageClassName: airflow-sc
   resources:
     requests:
-      storage: 2Gi
+      storage: 30Gi
 # ---
 # kind: PersistentVolume
 # apiVersion: v1
@@ -77,7 +77,7 @@ spec:
   storageClassName: airflow-sc
   resources:
     requests:
-      storage: 2Gi
+      storage: 30Gi
 # ---
 # kind: PersistentVolume
 # apiVersion: v1
@@ -92,16 +92,16 @@ spec:
 #     storage: 2Gi
 #   hostPath:
 #     path: /data
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: dbvol
-  namespace: airflow
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: airflow-sc
-  resources:
-    requests:
-      storage: 100Gi
+# ---
+# kind: PersistentVolumeClaim
+# apiVersion: v1
+# metadata:
+#   name: dbvol
+#   namespace: airflow
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   storageClassName: airflow-sc
+#   resources:
+#     requests:
+#       storage: 100Gi
