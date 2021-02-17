@@ -17,27 +17,39 @@
 
 # The backing volume can be anything you want, it just needs to be `ReadWriteOnce`
 # I'm using hostPath since minikube is nice for testing, but any (non-local) volume will work on a real cluster
+apiVersion: storage.k8s.io/v1beta1
+kind: CSIDriver
+metadata:
+  name: efs.csi.aws.com
+  namespace: airflow
+spec:
+  attachRequired: false
+---
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
-  name: airflow-sc
+  name: efs-sc
   namespace: airflow
-provisioner: ebs.csi.aws.com
-volumeBindingMode: WaitForFirstConsumer
-# ---
-# kind: PersistentVolume
-# apiVersion: v1
-# metadata:
-#   name: airflow-dags
-#   namespace: airflow
-# spec:
-#   accessModes:
-#     - ReadWriteOnce
-#   storageClassName: airflow-sc
-#   capacity:
-#     storage: 2Gi
-#   hostPath:
-#     path: /airflow-dags/
+provisioner: efs.csi.aws.com
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: airflow-dags
+  namespace: airflow
+spec:
+  capacity:
+    storage: 100Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: efs-sc
+  csi:
+    driver: efs.csi.aws.com
+    volumeHandle: $AOF_EFS_FS_ID::$AOF_EFS_AP
+  hostPath:
+    path: /airflow-dags/
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -46,25 +58,30 @@ metadata:
   namespace: airflow
 spec:
   accessModes:
-    - ReadWriteOnce
-  storageClassName: airflow-sc
+    - ReadWriteMany
+  storageClassName: efs-sc
   resources:
     requests:
-      storage: 30Gi
-# ---
-# kind: PersistentVolume
-# apiVersion: v1
-# metadata:
-#   name: airflow-logs
-#   namespace: airflow
-# spec:
-#   accessModes:
-#     - ReadWriteOnce
-#   storageClassName: airflow-sc
-#   capacity:
-#     storage: 2Gi
-#   hostPath:
-#     path: /airflow-logs/
+      storage: 25Gi 
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: airflow-logs
+  namespace: airflow
+spec:
+  capacity:
+    storage: 100Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: efs-sc
+  csi:
+    driver: efs.csi.aws.com
+    volumeHandle: $AOF_EFS_FS_ID::$AOF_EFS_AP
+  hostPath:
+    path: /airflow-logs/
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -73,35 +90,8 @@ metadata:
   namespace: airflow
 spec:
   accessModes:
-    - ReadWriteOnce
-  storageClassName: airflow-sc
+    - ReadWriteMany
+  storageClassName: efs-sc
   resources:
     requests:
-      storage: 30Gi
-# ---
-# kind: PersistentVolume
-# apiVersion: v1
-# metadata:
-#   name: dbvol
-#   namespace: airflow
-# spec:
-#   accessModes:
-#     - ReadWriteOnce
-#   storageClassName: airflow-sc
-#   capacity:
-#     storage: 2Gi
-#   hostPath:
-#     path: /data
-# ---
-# kind: PersistentVolumeClaim
-# apiVersion: v1
-# metadata:
-#   name: dbvol
-#   namespace: airflow
-# spec:
-#   accessModes:
-#     - ReadWriteOnce
-#   storageClassName: airflow-sc
-#   resources:
-#     requests:
-#       storage: 100Gi
+      storage: 25Gi 
