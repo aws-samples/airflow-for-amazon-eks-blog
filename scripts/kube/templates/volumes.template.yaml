@@ -47,7 +47,7 @@ spec:
   storageClassName: efs-sc
   csi:
     driver: efs.csi.aws.com
-    volumeHandle: test::test
+    volumeHandle: {{AOF_EFS_FS_ID}}::{{AOF_EFS_AP}}
   hostPath:
     path: /airflow-dags/
 ---
@@ -79,7 +79,7 @@ spec:
   storageClassName: efs-sc
   csi:
     driver: efs.csi.aws.com
-    volumeHandle: test::test
+    volumeHandle: {{AOF_EFS_FS_ID}}::{{AOF_EFS_AP}}
   hostPath:
     path: /airflow-logs/
 ---

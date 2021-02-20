@@ -21,6 +21,26 @@ set -x
 
 echo "Image" $IMAGE
 echo "Image Tag" $TAG
+echo "EFS File System ID" $AOK_EFS_FS_ID
+echo "EFS Access Point" $AOK_EFS_AP
+
+if [ -z "$IMAGE" ]; then
+  echo "\IMAGE envrionement variable is empty."
+  exit 1
+fi
+if [ -z "$TAG" ]; then
+  echo "\TAG envrionement variable is empty."
+  exit 1
+fi
+if [ -z "$AOK_EFS_FS_ID" ]; then
+  echo "\AOK_EFS_FS_ID envrionement variable is empty."
+  exit 1
+fi
+if [ -z "$AOK_EFS_AP" ]; then
+  echo "\AOK_EFS_AP envrionement variable is empty."
+  exit 1
+fi
+
 
 AIRFLOW_IMAGE=$IMAGE
 AIRFLOW_TAG=$TAG
@@ -88,20 +108,31 @@ ${SED_COMMAND} -i "s|{{CONFIGMAP_GIT_REPO}}|$CONFIGMAP_GIT_REPO|g" ${BUILD_DIRNA
 ${SED_COMMAND} -i "s|{{CONFIGMAP_BRANCH}}|$CONFIGMAP_BRANCH|g" ${BUILD_DIRNAME}/configmaps.yaml
 ${SED_COMMAND} -i "s|{{CONFIGMAP_GIT_DAGS_FOLDER_MOUNT_POINT}}|$CONFIGMAP_GIT_DAGS_FOLDER_MOUNT_POINT|g" ${BUILD_DIRNAME}/configmaps.yaml
 ${SED_COMMAND} -i "s|{{CONFIGMAP_DAGS_VOLUME_CLAIM}}|$CONFIGMAP_DAGS_VOLUME_CLAIM|g" ${BUILD_DIRNAME}/configmaps.yaml
+${SED_COMMAND} "s|{{AOF_EFS_FS_ID}}|$AOK_EFS_FS_ID|g" \
+  ${TEMPLATE_DIRNAME}/volumes.template.yaml > ${DIRNAME}/volumes.yaml
+${SED_COMMAND} -i "s|{{AOF_EFS_AP}}|$AOK_EFS_AP|g" ${DIRNAME}/volumes.yaml
 
 
 cat ${BUILD_DIRNAME}/airflow.yaml
 cat ${BUILD_DIRNAME}/configmaps.yaml
+cat ${DIRNAME}/volumes.yaml
 
 # Fix file permissions
 if [[ "${TRAVIS}" == true ]]; then
   sudo chown -R travis.travis $HOME/.kube $HOME/.minikube
 fi
 
-# kubectl delete -f $DIRNAME/postgres.yaml
-kubectl delete -f $BUILD_DIRNAME/airflow.yaml
-kubectl delete -f $DIRNAME/secrets.yaml
-kubectl delete -f $DIRNAME/namespace.yaml
+NAMESPACE=$(kubectl get all -n airflow| awk 'NR>1 {print $0}')
+NAMESPACE_READY=$(echo $NAMESPACE | awk '{print $2}' | grep -E '([0-9])\/(\1)' | wc -l | xargs)
+
+echo $NAMESPACE
+echo $NAMESPACE_READY
+
+if [ "$NAMESPACE_READY" -gt "0" ]; then
+  kubectl delete -f $BUILD_DIRNAME/airflow.yaml
+  kubectl delete -f $DIRNAME/secrets.yaml
+  kubectl delete -f $DIRNAME/namespace.yaml
+fi
 
 case $_MY_OS in
   linux)
@@ -117,12 +148,13 @@ case $_MY_OS in
 esac
 set -e
 
+
 kubectl apply -f $DIRNAME/namespace.yaml
 kubectl apply -f $DIRNAME/secrets.yaml
 kubectl apply -f $BUILD_DIRNAME/configmaps.yaml
-# kubectl apply -f $DIRNAME/postgres.yaml
 kubectl apply -f $DIRNAME/volumes.yaml
 kubectl apply -f $BUILD_DIRNAME/airflow.yaml
+
 
 # wait for up to 10 minutes for everything to be deployed
 PODS_ARE_READY=0
