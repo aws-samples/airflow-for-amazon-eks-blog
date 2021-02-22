@@ -160,9 +160,6 @@ spec:
         emptyDir: {}
       - name: airflow-dags-git
         emptyDir: {}
-      - name: airflow-volume
-        persistentVolumeClaim:
-          claimName: airflow-volume
       - name: airflow-configmap
         configMap:
           name: airflow-configmap
