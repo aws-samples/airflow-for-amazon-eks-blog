@@ -24,15 +24,15 @@ echo "EFS File System ID" $AOK_EFS_FS_ID
 echo "EFS Access Point" $AOK_EFS_AP
 
 if [ -z "$AOK_AIRFLOW_REPOSITORY" ]; then
-  echo "\AOK_AIRFLOW_REPOSITORY envrionement variable is empty."
+  echo "\AOK_AIRFLOW_REPOSITORY environement variable is empty."
   exit 1
 fi
 if [ -z "$AOK_EFS_FS_ID" ]; then
-  echo "\AOK_EFS_FS_ID envrionement variable is empty."
+  echo "\AOK_EFS_FS_ID environement variable is empty."
   exit 1
 fi
 if [ -z "$AOK_EFS_AP" ]; then
-  echo "\AOK_EFS_AP envrionement variable is empty."
+  echo "\AOK_EFS_AP environement variable is empty."
   exit 1
 fi
 
