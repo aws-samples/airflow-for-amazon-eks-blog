@@ -118,6 +118,7 @@ cat ${BUILD_DIRNAME}/configmaps.yaml
 cat ${DIRNAME}/volumes.yaml
 cat ${DIRNAME}/secrets.yaml
 
+
 # Fix file permissions
 if [[ "${TRAVIS}" == true ]]; then
   sudo chown -R travis.travis $HOME/.kube $HOME/.minikube

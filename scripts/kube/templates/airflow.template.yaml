@@ -153,16 +153,13 @@ spec:
         - name: {{POD_AIRFLOW_VOLUME_NAME}}
           mountPath: /root/airflow/logs
       volumes:
-      - name: airflow-dags
+      - name: airflow-volume
         persistentVolumeClaim:
           claimName: airflow-volume
       - name: airflow-dags-fake
         emptyDir: {}
       - name: airflow-dags-git
         emptyDir: {}
-      - name: airflow-logs
-        persistentVolumeClaim:
-          claimName: airflow-volume
       - name: airflow-configmap
         configMap:
           name: airflow-configmap
