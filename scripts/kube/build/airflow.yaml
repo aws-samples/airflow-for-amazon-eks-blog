@@ -70,7 +70,7 @@ spec:
       serviceAccountName: airflow
       initContainers:
       - name: "init"
-        image: public.ecr.aws/d6j6r1l2/airflow-aws-image:latest
+        image: AIRFLOWECRTEST:latest
         imagePullPolicy: Always
         volumeMounts:
         - name: airflow-configmap
@@ -106,7 +106,7 @@ spec:
       #   effect: "PreferNoSchedule"
       containers:
       - name: webserver
-        image: public.ecr.aws/d6j6r1l2/airflow-aws-image:latest
+        image: AIRFLOWECRTEST:latest
         imagePullPolicy: Always
         ports:
         - name: webserver
@@ -126,12 +126,12 @@ spec:
         - name: airflow-configmap
           mountPath: /root/airflow/airflow.cfg
           subPath: airflow.cfg
-        - name: airflow-dags
+        - name: airflow-volume
           mountPath: /root/airflow/dags
-        - name: airflow-logs
+        - name: airflow-volume
           mountPath: /root/airflow/logs
       - name: scheduler
-        image: public.ecr.aws/d6j6r1l2/airflow-aws-image:latest
+        image: AIRFLOWECRTEST:latest
         imagePullPolicy: Always
         args: ["scheduler"]
         env:
@@ -148,9 +148,9 @@ spec:
         - name: airflow-configmap
           mountPath: /root/airflow/airflow.cfg
           subPath: airflow.cfg
-        - name: airflow-dags
+        - name: airflow-volume
           mountPath: /root/airflow/dags
-        - name: airflow-logs
+        - name: airflow-volume
           mountPath: /root/airflow/logs
       volumes:
       - name: airflow-dags

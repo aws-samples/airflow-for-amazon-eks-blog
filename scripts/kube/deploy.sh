@@ -22,6 +22,7 @@ set -x
 echo "Airflow Image Repo" $AOK_AIRFLOW_REPOSITORY
 echo "EFS File System ID" $AOK_EFS_FS_ID
 echo "EFS Access Point" $AOK_EFS_AP
+echo "RDS SQL Connection String" $AOK_SQL_ALCHEMY_CONN
 
 if [ -z "$AOK_AIRFLOW_REPOSITORY" ]; then
   echo "\AOK_AIRFLOW_REPOSITORY environement variable is empty."
@@ -35,7 +36,10 @@ if [ -z "$AOK_EFS_AP" ]; then
   echo "\AOK_EFS_AP environement variable is empty."
   exit 1
 fi
-
+if [ -z "$AOK_SQL_ALCHEMY_CONN" ]; then
+  echo "\AOK_SQL_ALCHEMY_CONN environement variable is empty."
+  exit 1
+fi
 
 AIRFLOW_IMAGE=$AOK_AIRFLOW_REPOSITORY
 AIRFLOW_TAG=latest
@@ -51,7 +55,7 @@ rm -f ${BUILD_DIRNAME}/*
 
 
 INIT_DAGS_VOLUME_NAME=airflow-dags
-POD_AIRFLOW_DAGS_VOLUME_NAME=airflow-dags
+POD_AIRFLOW_VOLUME_NAME=airflow-volume
 CONFIGMAP_DAGS_FOLDER=/root/airflow/dags
 CONFIGMAP_GIT_DAGS_FOLDER_MOUNT_POINT=
 CONFIGMAP_DAGS_VOLUME_CLAIM=airflow-dags
@@ -93,7 +97,7 @@ ${SED_COMMAND} -i "s|{{AIRFLOW_TAG}}|$AIRFLOW_TAG|g" ${BUILD_DIRNAME}/airflow.ya
 ${SED_COMMAND} -i "s|{{CONFIGMAP_GIT_REPO}}|$CONFIGMAP_GIT_REPO|g" ${BUILD_DIRNAME}/airflow.yaml
 ${SED_COMMAND} -i "s|{{CONFIGMAP_BRANCH}}|$CONFIGMAP_BRANCH|g" ${BUILD_DIRNAME}/airflow.yaml
 ${SED_COMMAND} -i "s|{{INIT_DAGS_VOLUME_NAME}}|$INIT_DAGS_VOLUME_NAME|g" ${BUILD_DIRNAME}/airflow.yaml
-${SED_COMMAND} -i "s|{{POD_AIRFLOW_DAGS_VOLUME_NAME}}|$POD_AIRFLOW_DAGS_VOLUME_NAME|g" ${BUILD_DIRNAME}/airflow.yaml
+${SED_COMMAND} -i "s|{{POD_AIRFLOW_VOLUME_NAME}}|$POD_AIRFLOW_VOLUME_NAME|g" ${BUILD_DIRNAME}/airflow.yaml
 
 ${SED_COMMAND} "s|{{CONFIGMAP_DAGS_FOLDER}}|$CONFIGMAP_DAGS_FOLDER|g" \
     ${TEMPLATE_DIRNAME}/configmaps.template.yaml > ${BUILD_DIRNAME}/configmaps.yaml
@@ -106,11 +110,13 @@ ${SED_COMMAND} -i "s|{{CONFIGMAP_DAGS_VOLUME_CLAIM}}|$CONFIGMAP_DAGS_VOLUME_CLAI
 ${SED_COMMAND} "s|{{AOF_EFS_FS_ID}}|$AOK_EFS_FS_ID|g" \
   ${TEMPLATE_DIRNAME}/volumes.template.yaml > ${DIRNAME}/volumes.yaml
 ${SED_COMMAND} -i "s|{{AOF_EFS_AP}}|$AOK_EFS_AP|g" ${DIRNAME}/volumes.yaml
-
+${SED_COMMAND} "s|{{AOK_SQL_ALCHEMY_CONN}}|$AOK_SQL_ALCHEMY_CONN|g" \
+  ${TEMPLATE_DIRNAME}/secrets.template.yaml > ${DIRNAME}/secrets.yaml
 
 cat ${BUILD_DIRNAME}/airflow.yaml
 cat ${BUILD_DIRNAME}/configmaps.yaml
 cat ${DIRNAME}/volumes.yaml
+cat ${DIRNAME}/secrets.yaml
 
 # Fix file permissions
 if [[ "${TRAVIS}" == true ]]; then

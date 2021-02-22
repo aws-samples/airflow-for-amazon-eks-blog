@@ -126,9 +126,9 @@ spec:
         - name: airflow-configmap
           mountPath: /root/airflow/airflow.cfg
           subPath: airflow.cfg
-        - name: {{POD_AIRFLOW_DAGS_VOLUME_NAME}}
+        - name: {{POD_AIRFLOW_VOLUME_NAME}}
           mountPath: /root/airflow/dags
-        - name: airflow-logs
+        - name: {{POD_AIRFLOW_VOLUME_NAME}}
           mountPath: /root/airflow/logs
       - name: scheduler
         image: {{AIRFLOW_IMAGE}}:{{AIRFLOW_TAG}}
@@ -148,9 +148,9 @@ spec:
         - name: airflow-configmap
           mountPath: /root/airflow/airflow.cfg
           subPath: airflow.cfg
-        - name: {{POD_AIRFLOW_DAGS_VOLUME_NAME}}
+        - name: {{POD_AIRFLOW_VOLUME_NAME}}
           mountPath: /root/airflow/dags
-        - name: airflow-logs
+        - name: {{POD_AIRFLOW_VOLUME_NAME}}
           mountPath: /root/airflow/logs
       volumes:
       - name: airflow-dags

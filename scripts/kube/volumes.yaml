@@ -35,7 +35,7 @@ provisioner: efs.csi.aws.com
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: airflow-dags
+  name: airflow-volume
   namespace: airflow
 spec:
   capacity:
@@ -47,9 +47,7 @@ spec:
   storageClassName: efs-sc
   csi:
     driver: efs.csi.aws.com
-    volumeHandle: test::test
-  hostPath:
-    path: /airflow-dags/
+    volumeHandle: EFSTEST::EFSAPTEST
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -62,36 +60,4 @@ spec:
   storageClassName: efs-sc
   resources:
     requests:
-      storage: 25Gi 
----
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: airflow-logs
-  namespace: airflow
-spec:
-  capacity:
-    storage: 100Gi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: efs-sc
-  csi:
-    driver: efs.csi.aws.com
-    volumeHandle: test::test
-  hostPath:
-    path: /airflow-logs/
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: airflow-logs
-  namespace: airflow
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: efs-sc
-  resources:
-    requests:
-      storage: 25Gi 
+      storage: 25Gi
