@@ -156,7 +156,7 @@ data:
 
     [kubernetes]
     airflow_configmap = airflow-configmap
-    worker_container_repository = AIRFLOWECRTEST
+    worker_container_repository = test
     worker_container_tag = latest
     worker_container_image_pull_policy = Always
     worker_service_account_name = airflow

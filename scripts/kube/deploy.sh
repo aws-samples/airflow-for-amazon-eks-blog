@@ -54,7 +54,7 @@ fi
 rm -f ${BUILD_DIRNAME}/*
 
 
-INIT_DAGS_VOLUME_NAME=airflow-dags
+INIT_DAGS_VOLUME_NAME=airflow-volume
 POD_AIRFLOW_VOLUME_NAME=airflow-volume
 CONFIGMAP_DAGS_FOLDER=/root/airflow/dags
 CONFIGMAP_GIT_DAGS_FOLDER_MOUNT_POINT=
@@ -117,7 +117,6 @@ cat ${BUILD_DIRNAME}/airflow.yaml
 cat ${BUILD_DIRNAME}/configmaps.yaml
 cat ${DIRNAME}/volumes.yaml
 cat ${DIRNAME}/secrets.yaml
-
 
 # Fix file permissions
 if [[ "${TRAVIS}" == true ]]; then

@@ -70,13 +70,13 @@ spec:
       serviceAccountName: airflow
       initContainers:
       - name: "init"
-        image: AIRFLOWECRTEST:latest
+        image: test:latest
         imagePullPolicy: Always
         volumeMounts:
         - name: airflow-configmap
           mountPath: /root/airflow/airflow.cfg
           subPath: airflow.cfg
-        - name: airflow-dags
+        - name: airflow-volume
           mountPath: /root/airflow/dags
         env:
         - name: SQL_ALCHEMY_CONN
@@ -106,7 +106,7 @@ spec:
       #   effect: "PreferNoSchedule"
       containers:
       - name: webserver
-        image: AIRFLOWECRTEST:latest
+        image: test:latest
         imagePullPolicy: Always
         ports:
         - name: webserver
@@ -131,7 +131,7 @@ spec:
         - name: airflow-volume
           mountPath: /root/airflow/logs
       - name: scheduler
-        image: AIRFLOWECRTEST:latest
+        image: test:latest
         imagePullPolicy: Always
         args: ["scheduler"]
         env:
