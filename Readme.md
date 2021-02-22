@@ -17,8 +17,7 @@ The setup files are copied directly from airflow's repo and modified to fit the 
 1. Navigate to ```scripts\docker``` directory and build the Docker Image using ```docker build -t <ECR-uri:tag> .``` 
 2. Push the image the ECR Repo using ```docker push <ECR-uri:tag>```
 3. set the following environment variables on your terminal : \
-    a. ```export IMAGE=<ECR-uri>```. \
-    b. ```export TAG=<ECR-tag>```. 
+    a. ```export AOK_AIRFLOW_REPOSITORY=<ECR-uri>```. \
 4. Navigate to ```scrips\kube``` directory and run the ```./deploy.sh``` to deploy the kubernetes infrastructure for airflow.
 5. Obtain the airflow URL by running ```kubectl get svc -n airflow```
 6. Log in the airflow using the above URL with ```eksuser``` as user and ```ekspassword``` as password.
