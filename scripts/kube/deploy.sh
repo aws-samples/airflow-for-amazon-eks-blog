@@ -19,17 +19,12 @@
 
 set -x
 
-echo "Image" $IMAGE
-echo "Image Tag" $TAG
+echo "Airflow Image Repo" $AOK_AIRFLOW_REPOSITORY
 echo "EFS File System ID" $AOK_EFS_FS_ID
 echo "EFS Access Point" $AOK_EFS_AP
 
-if [ -z "$IMAGE" ]; then
-  echo "\IMAGE envrionement variable is empty."
-  exit 1
-fi
-if [ -z "$TAG" ]; then
-  echo "\TAG envrionement variable is empty."
+if [ -z "$AOK_AIRFLOW_REPOSITORY" ]; then
+  echo "\AOK_AIRFLOW_REPOSITORY envrionement variable is empty."
   exit 1
 fi
 if [ -z "$AOK_EFS_FS_ID" ]; then
@@ -42,8 +37,8 @@ if [ -z "$AOK_EFS_AP" ]; then
 fi
 
 
-AIRFLOW_IMAGE=$IMAGE
-AIRFLOW_TAG=$TAG
+AIRFLOW_IMAGE=$AOK_AIRFLOW_REPOSITORY
+AIRFLOW_TAG=latest
 DIRNAME=$(cd "$(dirname "$0")"; pwd)
 TEMPLATE_DIRNAME=${DIRNAME}/templates
 BUILD_DIRNAME=${DIRNAME}/build
