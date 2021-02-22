@@ -155,14 +155,14 @@ spec:
       volumes:
       - name: airflow-dags
         persistentVolumeClaim:
-          claimName: airflow-dags
+          claimName: airflow-volume
       - name: airflow-dags-fake
         emptyDir: {}
       - name: airflow-dags-git
         emptyDir: {}
       - name: airflow-logs
         persistentVolumeClaim:
-          claimName: airflow-logs
+          claimName: airflow-volume
       - name: airflow-configmap
         configMap:
           name: airflow-configmap

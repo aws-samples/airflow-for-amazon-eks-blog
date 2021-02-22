@@ -52,7 +52,7 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: airflow-dags
+  name: airflow-volume
   namespace: airflow
 spec:
   accessModes:
