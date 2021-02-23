@@ -123,8 +123,8 @@ if [[ "${TRAVIS}" == true ]]; then
   sudo chown -R travis.travis $HOME/.kube $HOME/.minikube
 fi
 
-NAMESPACE=$(kubectl get all -n airflow| awk 'NR>1 {print $0}')
-NAMESPACE_READY=$(echo $NAMESPACE | awk '{print $2}' | grep -E '([0-9])\/(\1)' | wc -l | xargs)
+NAMESPACE=$(kubectl get pods -n airflow|awk 'NR>1 {print $0}')
+NAMESPACE_READY=$(echo $NAMESPACE | awk '{print $2}' | wc -l | xargs)
 
 echo $NAMESPACE
 echo $NAMESPACE_READY

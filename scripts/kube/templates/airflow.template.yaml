@@ -77,7 +77,8 @@ spec:
           mountPath: /root/airflow/airflow.cfg
           subPath: airflow.cfg
         - name: {{INIT_DAGS_VOLUME_NAME}}
-          mountPath: /root/airflow/dags
+          # mountPath: /root/airflow/dags
+          mountPath: /airflow/dags
         env:
         - name: SQL_ALCHEMY_CONN
           valueFrom:
@@ -127,9 +128,11 @@ spec:
           mountPath: /root/airflow/airflow.cfg
           subPath: airflow.cfg
         - name: {{POD_AIRFLOW_VOLUME_NAME}}
-          mountPath: /root/airflow/dags
+          mountPath: /airflow/dags
+          # mountPath: /root/airflow/dags
         - name: {{POD_AIRFLOW_VOLUME_NAME}}
-          mountPath: /root/airflow/logs
+          mountPath: /airflow/logs
+          # mountPath: /root/airflow/logs
       - name: scheduler
         image: {{AIRFLOW_IMAGE}}:{{AIRFLOW_TAG}}
         imagePullPolicy: Always
@@ -149,9 +152,11 @@ spec:
           mountPath: /root/airflow/airflow.cfg
           subPath: airflow.cfg
         - name: {{POD_AIRFLOW_VOLUME_NAME}}
-          mountPath: /root/airflow/dags
+          mountPath: /airflow/dags
+          # mountPath: /root/airflow/dags
         - name: {{POD_AIRFLOW_VOLUME_NAME}}
-          mountPath: /root/airflow/logs
+          mountPath: /airflow/logs
+          # mountPath: /root/airflow/logs
       volumes:
       - name: airflow-volume
         persistentVolumeClaim:

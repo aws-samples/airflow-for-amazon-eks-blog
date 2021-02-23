@@ -47,7 +47,7 @@ spec:
   storageClassName: efs-sc
   csi:
     driver: efs.csi.aws.com
-    volumeHandle: test::test
+    volumeHandle: fs-34430e30::fsap-0b5042427507a736f
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -60,4 +60,4 @@ spec:
   storageClassName: efs-sc
   resources:
     requests:
-      storage: 25Gi
+      storage: 100Gi

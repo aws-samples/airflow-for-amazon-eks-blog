@@ -70,14 +70,15 @@ spec:
       serviceAccountName: airflow
       initContainers:
       - name: "init"
-        image: test:latest
+        image: public.ecr.aws/d6j6r1l2/airflow-aws-image:latest
         imagePullPolicy: Always
         volumeMounts:
         - name: airflow-configmap
           mountPath: /root/airflow/airflow.cfg
           subPath: airflow.cfg
         - name: airflow-volume
-          mountPath: /root/airflow/dags
+          # mountPath: /root/airflow/dags
+          mountPath: /airflow/dags
         env:
         - name: SQL_ALCHEMY_CONN
           valueFrom:
@@ -106,7 +107,7 @@ spec:
       #   effect: "PreferNoSchedule"
       containers:
       - name: webserver
-        image: test:latest
+        image: public.ecr.aws/d6j6r1l2/airflow-aws-image:latest
         imagePullPolicy: Always
         ports:
         - name: webserver
@@ -127,11 +128,13 @@ spec:
           mountPath: /root/airflow/airflow.cfg
           subPath: airflow.cfg
         - name: airflow-volume
-          mountPath: /root/airflow/dags
+          mountPath: /airflow/dags
+          # mountPath: /root/airflow/dags
         - name: airflow-volume
-          mountPath: /root/airflow/logs
+          mountPath: /airflow/logs
+          # mountPath: /root/airflow/logs
       - name: scheduler
-        image: test:latest
+        image: public.ecr.aws/d6j6r1l2/airflow-aws-image:latest
         imagePullPolicy: Always
         args: ["scheduler"]
         env:
@@ -149,9 +152,11 @@ spec:
           mountPath: /root/airflow/airflow.cfg
           subPath: airflow.cfg
         - name: airflow-volume
-          mountPath: /root/airflow/dags
+          mountPath: /airflow/dags
+          # mountPath: /root/airflow/dags
         - name: airflow-volume
-          mountPath: /root/airflow/logs
+          mountPath: /airflow/logs
+          # mountPath: /root/airflow/logs
       volumes:
       - name: airflow-volume
         persistentVolumeClaim:
