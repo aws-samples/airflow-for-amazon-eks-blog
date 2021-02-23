@@ -76,8 +76,7 @@ spec:
         - name: airflow-configmap
           mountPath: /root/airflow/airflow.cfg
           subPath: airflow.cfg
-        - name: airflow-efs-pvc
-          # mountPath: /root/airflow/dags
+        - name: airflow-dags
           mountPath: /airflow/dags
         env:
         - name: SQL_ALCHEMY_CONN
@@ -127,12 +126,10 @@ spec:
         - name: airflow-configmap
           mountPath: /root/airflow/airflow.cfg
           subPath: airflow.cfg
-        - name: airflow-efs-pvc
-          mountPath: /airflow/dags
-          # mountPath: /root/airflow/dags
-        - name: airflow-efs-pvc
-          mountPath: /airflow/logs
-          # mountPath: /root/airflow/logs
+        - name: airflow-dags
+          mountPath: /root/airflow/dags
+        - name: airflow-dags
+          mountPath: /root/airflow/logs
       - name: scheduler
         image: 940019131157.dkr.ecr.us-west-2.amazonaws.com/airflow-eks-demo:latest
         imagePullPolicy: Always
@@ -151,14 +148,12 @@ spec:
         - name: airflow-configmap
           mountPath: /root/airflow/airflow.cfg
           subPath: airflow.cfg
-        - name: airflow-efs-pvc
-          mountPath: /airflow/dags
-          # mountPath: /root/airflow/dags
-        - name: airflow-efs-pvc
-          mountPath: /airflow/logs
-          # mountPath: /root/airflow/logs
+        - name: airflow-dags
+          mountPath: /root/airflow/dags
+        - name: airflow-dags
+          mountPath: /root/airflow/logs
       volumes:
-      - name: airflow-efs-pvc
+      - name: airflow-dags
         persistentVolumeClaim:
           claimName: airflow-efs-pvc
       - name: airflow-dags-fake

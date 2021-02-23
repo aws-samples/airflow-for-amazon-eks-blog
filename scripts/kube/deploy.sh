@@ -54,8 +54,8 @@ fi
 rm -f ${BUILD_DIRNAME}/*
 
 
-INIT_DAGS_VOLUME_NAME=airflow-efs-pvc
-POD_AIRFLOW_VOLUME_NAME=airflow-efs-pvc
+INIT_DAGS_VOLUME_NAME=airflow-dags
+POD_AIRFLOW_VOLUME_NAME=airflow-dags
 CONFIGMAP_DAGS_FOLDER=/root/airflow/dags
 CONFIGMAP_GIT_DAGS_FOLDER_MOUNT_POINT=
 CONFIGMAP_DAGS_VOLUME_CLAIM=airflow-efs-pvc
@@ -123,18 +123,17 @@ if [[ "${TRAVIS}" == true ]]; then
   sudo chown -R travis.travis $HOME/.kube $HOME/.minikube
 fi
 
-NAMESPACE=$(kubectl get namespace airflow|awk 'NR>1 {print $0}')
-NAMESPACE_READY=$(echo $NAMESPACE | awk '{print $2}' | wc -l | xargs)
+NAMESPACE_AVAILABLE=$(kubectl get namespace airflow|wc -l | xargs)
 
-echo $NAMESPACE
-echo $NAMESPACE_READY
+echo $NAMESPACE_AVAILABLE
 
-if [ "$NAMESPACE_READY" -gt "0" ]; then
+if [ "$NAMESPACE_AVAILABLE" -gt "0" ]; then
   kubectl delete -f $BUILD_DIRNAME/airflow.yaml
   kubectl delete -f $DIRNAME/secrets.yaml
-  kubectl delete -f $DIRNAME/volumes.yaml
+  # kubectl delete -f $DIRNAME/volumes.yaml
   kubectl delete -f $DIRNAME/namespace.yaml
 fi
+
 
 case $_MY_OS in
   linux)
