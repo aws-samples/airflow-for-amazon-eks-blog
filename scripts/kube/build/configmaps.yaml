@@ -171,9 +171,9 @@ data:
     git_sync_root = /git
     git_sync_path = repo
     git_dags_folder_mount_point = 
-    dags_volume_claim = airflow-dags
+    dags_volume_claim = airflow-volume
     dags_volume_subpath =
-    logs_volume_claim = airflow-logs
+    logs_volume_claim = airflow-volume
     logs_volume_subpath =
     dags_volume_host =
     logs_volume_host =
