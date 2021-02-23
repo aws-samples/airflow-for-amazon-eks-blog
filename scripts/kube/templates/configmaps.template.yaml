@@ -173,7 +173,7 @@ data:
     git_dags_folder_mount_point = {{CONFIGMAP_GIT_DAGS_FOLDER_MOUNT_POINT}}
     dags_volume_claim = {{CONFIGMAP_DAGS_VOLUME_CLAIM}}
     dags_volume_subpath =
-    logs_volume_claim = airflow-volume
+    logs_volume_claim = airflow-efs-pvc
     logs_volume_subpath =
     dags_volume_host =
     logs_volume_host =

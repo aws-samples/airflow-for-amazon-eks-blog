@@ -54,11 +54,11 @@ fi
 rm -f ${BUILD_DIRNAME}/*
 
 
-INIT_DAGS_VOLUME_NAME=airflow-volume
-POD_AIRFLOW_VOLUME_NAME=airflow-volume
+INIT_DAGS_VOLUME_NAME=airflow-efs-pvc
+POD_AIRFLOW_VOLUME_NAME=airflow-efs-pvc
 CONFIGMAP_DAGS_FOLDER=/root/airflow/dags
 CONFIGMAP_GIT_DAGS_FOLDER_MOUNT_POINT=
-CONFIGMAP_DAGS_VOLUME_CLAIM=airflow-volume
+CONFIGMAP_DAGS_VOLUME_CLAIM=airflow-efs-pvc
 
 CONFIGMAP_GIT_REPO=${TRAVIS_REPO_SLUG:-apache/airflow}
 CONFIGMAP_BRANCH=${TRAVIS_BRANCH:-master}
@@ -107,9 +107,9 @@ ${SED_COMMAND} -i "s|{{CONFIGMAP_GIT_REPO}}|$CONFIGMAP_GIT_REPO|g" ${BUILD_DIRNA
 ${SED_COMMAND} -i "s|{{CONFIGMAP_BRANCH}}|$CONFIGMAP_BRANCH|g" ${BUILD_DIRNAME}/configmaps.yaml
 ${SED_COMMAND} -i "s|{{CONFIGMAP_GIT_DAGS_FOLDER_MOUNT_POINT}}|$CONFIGMAP_GIT_DAGS_FOLDER_MOUNT_POINT|g" ${BUILD_DIRNAME}/configmaps.yaml
 ${SED_COMMAND} -i "s|{{CONFIGMAP_DAGS_VOLUME_CLAIM}}|$CONFIGMAP_DAGS_VOLUME_CLAIM|g" ${BUILD_DIRNAME}/configmaps.yaml
-${SED_COMMAND} "s|{{AOF_EFS_FS_ID}}|$AOK_EFS_FS_ID|g" \
+${SED_COMMAND} "s|{{AOK_EFS_FS_ID}}|$AOK_EFS_FS_ID|g" \
   ${TEMPLATE_DIRNAME}/volumes.template.yaml > ${DIRNAME}/volumes.yaml
-${SED_COMMAND} -i "s|{{AOF_EFS_AP}}|$AOK_EFS_AP|g" ${DIRNAME}/volumes.yaml
+${SED_COMMAND} -i "s|{{AOK_EFS_AP}}|$AOK_EFS_AP|g" ${DIRNAME}/volumes.yaml
 ${SED_COMMAND} "s|{{AOK_SQL_ALCHEMY_CONN}}|$AOK_SQL_ALCHEMY_CONN|g" \
   ${TEMPLATE_DIRNAME}/secrets.template.yaml > ${DIRNAME}/secrets.yaml
 
@@ -123,7 +123,7 @@ if [[ "${TRAVIS}" == true ]]; then
   sudo chown -R travis.travis $HOME/.kube $HOME/.minikube
 fi
 
-NAMESPACE=$(kubectl get pods -n airflow|awk 'NR>1 {print $0}')
+NAMESPACE=$(kubectl get namespace airflow|awk 'NR>1 {print $0}')
 NAMESPACE_READY=$(echo $NAMESPACE | awk '{print $2}' | wc -l | xargs)
 
 echo $NAMESPACE
@@ -132,6 +132,7 @@ echo $NAMESPACE_READY
 if [ "$NAMESPACE_READY" -gt "0" ]; then
   kubectl delete -f $BUILD_DIRNAME/airflow.yaml
   kubectl delete -f $DIRNAME/secrets.yaml
+  kubectl delete -f $DIRNAME/volumes.yaml
   kubectl delete -f $DIRNAME/namespace.yaml
 fi
 

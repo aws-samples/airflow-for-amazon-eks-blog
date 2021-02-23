@@ -70,13 +70,13 @@ spec:
       serviceAccountName: airflow
       initContainers:
       - name: "init"
-        image: public.ecr.aws/d6j6r1l2/airflow-aws-image:latest
+        image: 940019131157.dkr.ecr.us-west-2.amazonaws.com/airflow-eks-demo:latest
         imagePullPolicy: Always
         volumeMounts:
         - name: airflow-configmap
           mountPath: /root/airflow/airflow.cfg
           subPath: airflow.cfg
-        - name: airflow-volume
+        - name: airflow-efs-pvc
           # mountPath: /root/airflow/dags
           mountPath: /airflow/dags
         env:
@@ -107,7 +107,7 @@ spec:
       #   effect: "PreferNoSchedule"
       containers:
       - name: webserver
-        image: public.ecr.aws/d6j6r1l2/airflow-aws-image:latest
+        image: 940019131157.dkr.ecr.us-west-2.amazonaws.com/airflow-eks-demo:latest
         imagePullPolicy: Always
         ports:
         - name: webserver
@@ -127,14 +127,14 @@ spec:
         - name: airflow-configmap
           mountPath: /root/airflow/airflow.cfg
           subPath: airflow.cfg
-        - name: airflow-volume
+        - name: airflow-efs-pvc
           mountPath: /airflow/dags
           # mountPath: /root/airflow/dags
-        - name: airflow-volume
+        - name: airflow-efs-pvc
           mountPath: /airflow/logs
           # mountPath: /root/airflow/logs
       - name: scheduler
-        image: public.ecr.aws/d6j6r1l2/airflow-aws-image:latest
+        image: 940019131157.dkr.ecr.us-west-2.amazonaws.com/airflow-eks-demo:latest
         imagePullPolicy: Always
         args: ["scheduler"]
         env:
@@ -151,16 +151,16 @@ spec:
         - name: airflow-configmap
           mountPath: /root/airflow/airflow.cfg
           subPath: airflow.cfg
-        - name: airflow-volume
+        - name: airflow-efs-pvc
           mountPath: /airflow/dags
           # mountPath: /root/airflow/dags
-        - name: airflow-volume
+        - name: airflow-efs-pvc
           mountPath: /airflow/logs
           # mountPath: /root/airflow/logs
       volumes:
-      - name: airflow-volume
+      - name: airflow-efs-pvc
         persistentVolumeClaim:
-          claimName: airflow-volume
+          claimName: airflow-efs-pvc
       - name: airflow-dags-fake
         emptyDir: {}
       - name: airflow-dags-git

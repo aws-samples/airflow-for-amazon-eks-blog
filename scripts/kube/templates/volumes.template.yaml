@@ -18,25 +18,23 @@
 # The backing volume can be anything you want, it just needs to be `ReadWriteOnce`
 # I'm using hostPath since minikube is nice for testing, but any (non-local) volume will work on a real cluster
 # apiVersion: storage.k8s.io/v1beta1
-# kind: CSIDriver
-# metadata:
-#   name: efs.csi.aws.com
-#   namespace: airflow
-# spec:
-#   attachRequired: false
-# ---
+apiVersion: storage.k8s.io/v1beta1
+kind: CSIDriver
+metadata:
+  name: efs.csi.aws.com
+spec:
+  attachRequired: false
+---
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   name: efs-sc
-  namespace: airflow
 provisioner: efs.csi.aws.com
 ---
-kind: PersistentVolume
 apiVersion: v1
+kind: PersistentVolume
 metadata:
-  name: airflow-volume
-  namespace: airflow
+  name: airflow-efs-pv
 spec:
   capacity:
     storage: 100Gi
@@ -47,12 +45,12 @@ spec:
   storageClassName: efs-sc
   csi:
     driver: efs.csi.aws.com
-    volumeHandle: {{AOF_EFS_FS_ID}}::{{AOF_EFS_AP}}
+    volumeHandle: {{AOK_EFS_FS_ID}}::{{AOK_EFS_AP}}
 ---
-kind: PersistentVolumeClaim
 apiVersion: v1
+kind: PersistentVolumeClaim
 metadata:
-  name: airflow-volume
+  name: airflow-efs-pvc
   namespace: airflow
 spec:
   accessModes:
