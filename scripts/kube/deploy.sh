@@ -128,10 +128,8 @@ NAMESPACE_AVAILABLE=$(kubectl get namespace airflow|wc -l | xargs)
 echo $NAMESPACE_AVAILABLE
 
 if [ "$NAMESPACE_AVAILABLE" -gt "0" ]; then
-  kubectl delete -f $BUILD_DIRNAME/airflow.yaml
-  kubectl delete -f $DIRNAME/secrets.yaml
-  # kubectl delete -f $DIRNAME/volumes.yaml
   kubectl delete -f $DIRNAME/namespace.yaml
+  kubectl delete -f $DIRNAME/volumes.yaml
 fi
 
 

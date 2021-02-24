@@ -20,8 +20,9 @@
 set -e
 
 cd /usr/local/lib/python3.6/site-packages/airflow && \
-cp -R example_dags/* /root/airflow/dags/ && \
-cp -R contrib/example_dags/example_kubernetes_*.py /root/airflow/dags/ && \
+cp example_dags/example_bash_operator.py /root/airflow/dags/ && \
+# cp -R example_dags/* /root/airflow/dags/ && \
+# cp -R contrib/example_dags/example_kubernetes_*.py /root/airflow/dags/ && \
 cp -R contrib/example_dags/libs /root/airflow/dags/ && \
 airflow initdb && \
 alembic upgrade heads && \

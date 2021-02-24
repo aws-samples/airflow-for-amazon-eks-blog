@@ -77,7 +77,7 @@ spec:
           mountPath: /root/airflow/airflow.cfg
           subPath: airflow.cfg
         - name: airflow-dags
-          mountPath: /airflow/dags
+          mountPath: /root/airflow/dags
         env:
         - name: SQL_ALCHEMY_CONN
           valueFrom:
