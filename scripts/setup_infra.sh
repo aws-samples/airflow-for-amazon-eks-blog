@@ -3,6 +3,7 @@
 # 1. Deploy Kubernetes Cluster Autoscaler.
 # 2. Deploy the EFS CSI driver and create EFS filesystem and Access Point.
 # 3. Deploy an Amazon RDS PostgreSQL database.
+# 4. Creates an ECR Repository for holding Airflow Docker Image.
 # This script should be run using the command ". ./setup_infra.sh" to preserve the environment variables.
 
 # Prerequisites:
@@ -193,7 +194,7 @@ aws ec2 authorize-security-group-ingress \
   --region $AOK_AWS_REGION
 
 printf "Waiting for 5 minutes....\n"
-sleep 360 
+sleep 300 
 
 printf "Checking if the RDS Instance is up ....\n"
 aws rds describe-db-instances \
@@ -210,3 +211,9 @@ export AOK_RDS_ENDPOINT=$(aws rds describe-db-instances \
 
 printf "Creating an SQL connection string....\n"
 export AOK_SQL_ALCHEMY_CONN=$(echo -n postgresql://airflowadmin:supersecretpassword@${AOK_RDS_ENDPOINT}:5432/airflow | base64)
+
+export AOK_AIRFLOW_REPOSITORY=$(aws ecr create-repository \
+  --repository-name airflow-eks-demo \
+  --region $AOK_AWS_REGION \
+  --query 'repository.repositoryUri' \
+  --output text)
