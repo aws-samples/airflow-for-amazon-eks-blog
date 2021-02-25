@@ -180,8 +180,8 @@ aws rds create-db-instance \
 printf "Creating RDS security group....\n"
 AOK_RDS_SG=$(aws rds describe-db-instances \
    --db-instance-identifier airflow-postgres \
-   --region $AOK_AWS_REGION \ 
-   --query "DBInstances[].VpcSecurityGroups[].VpcSecurityGroupId" \ 
+   --region $AOK_AWS_REGION \
+   --query "DBInstances[].VpcSecurityGroups[].VpcSecurityGroupId" \
    --output text)
 
 printf "Authorizing traffic....\n"
