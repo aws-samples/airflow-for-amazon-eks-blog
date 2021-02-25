@@ -120,6 +120,9 @@ export AOK_EFS_FS_ID=$(aws efs create-file-system \
   --output text \
   --query "FileSystemId")
 
+printf "Waiting for 10 seconds....\n"
+sleep 10
+
 printf "Creating EFS mount targets in each subnet attached to on-demand nodes....\n"
 for subnet in $(aws eks describe-nodegroup \
   --cluster-name $AOK_EKS_CLUSTER_NAME \
@@ -189,7 +192,8 @@ aws ec2 authorize-security-group-ingress \
   --protocol tcp \
   --region $AOK_AWS_REGION
 
-sleep 5m # Waits 5 minutes.
+printf "Waiting for 5 minutes....\n"
+sleep 360 
 
 printf "Checking if the RDS Instance is up ....\n"
 aws rds describe-db-instances \
