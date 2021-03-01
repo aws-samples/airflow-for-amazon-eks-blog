@@ -68,6 +68,15 @@ spec:
         name: airflow
     spec:
       serviceAccountName: airflow
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: lifecycle
+                operator: NotIn
+                values:
+                - Ec2Spot
       initContainers:
       - name: "init"
         image: {{AIRFLOW_IMAGE}}:{{AIRFLOW_TAG}}
