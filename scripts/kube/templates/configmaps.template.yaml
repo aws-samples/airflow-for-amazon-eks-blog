@@ -181,7 +181,7 @@ data:
     gcp_service_account_keys =
 
     # Example affinity and toleration definitions.
-    affinity = {"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"weight":1,"preference":[{"matchExpressions":[{"key":"lifecycle","operator":"In","value":"Ec2Spot"}]}],"nodeSelectorTerms":[{"matchExpressions":[{"key":"kubernetes.io/hostname","operator":"NotIn","values":["4e5e6a99-e28a-450b-bba9-e0124853de9b"]}]}]}}}
+    affinity = {"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"weight":1,"preference":[{"matchExpressions":[{"key":"lifecycle","operator":"In","value":"Ec2Spot"}]}]}}}
     tolerations = [{ "key": "spotInstance", "operator": "Equal", "value": "true", "effect": "PreferNoSchedule" },{ "key": "dedicated", "operator": "Equal", "value": "airflow", "effect": "NoSchedule" }, { "key": "prod", "operator": "Exists" }]
     # affinity = {"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"kubernetes.io/hostname","operator":"NotIn","values":["4e5e6a99-e28a-450b-bba9-e0124853de9b"]}]}]}}}
     # tolerations = [{ "key": "dedicated", "operator": "Equal", "value": "airflow", "effect": "NoSchedule" }, { "key": "prod", "operator": "Exists" }]
