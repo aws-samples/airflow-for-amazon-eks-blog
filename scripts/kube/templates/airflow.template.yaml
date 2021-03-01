@@ -98,21 +98,6 @@ spec:
         args:
           - "-cx"
           - "./tmp/airflow-test-env-init.sh {{INIT_GIT_SYNC}}"
-      # affinity:
-      #   nodeAffinity:
-      #     preferredDuringSchedulingIgnoredDuringExecution:
-      #     - weight: 1
-      #       preference:
-      #         matchExpressions:
-      #         - key: lifecycle
-      #           operator: In
-      #           values:
-      #           - Ec2Spot
-      # tolerations:
-      # - key: "spotInstance"
-      #   operator: "Equal"
-      #   value: "true"
-      #   effect: "PreferNoSchedule"
       containers:
       - name: webserver
         image: {{AIRFLOW_IMAGE}}:{{AIRFLOW_TAG}}
