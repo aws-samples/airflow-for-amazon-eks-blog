@@ -70,7 +70,7 @@ spec:
       serviceAccountName: airflow
       initContainers:
       - name: "init"
-        image: 940019131157.dkr.ecr.us-west-2.amazonaws.com/airflow-eks-demo:latest
+        image: 542082525742.dkr.ecr.us-west-2.amazonaws.com/airflow-eks-demo:latest
         imagePullPolicy: Always
         volumeMounts:
         - name: airflow-configmap
@@ -106,7 +106,7 @@ spec:
       #   effect: "PreferNoSchedule"
       containers:
       - name: webserver
-        image: 940019131157.dkr.ecr.us-west-2.amazonaws.com/airflow-eks-demo:latest
+        image: 542082525742.dkr.ecr.us-west-2.amazonaws.com/airflow-eks-demo:latest
         imagePullPolicy: Always
         ports:
         - name: webserver
@@ -131,7 +131,7 @@ spec:
         - name: airflow-dags
           mountPath: /root/airflow/logs
       - name: scheduler
-        image: 940019131157.dkr.ecr.us-west-2.amazonaws.com/airflow-eks-demo:latest
+        image: 542082525742.dkr.ecr.us-west-2.amazonaws.com/airflow-eks-demo:latest
         imagePullPolicy: Always
         args: ["scheduler"]
         env:

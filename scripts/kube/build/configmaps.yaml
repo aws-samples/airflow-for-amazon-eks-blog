@@ -156,7 +156,7 @@ data:
 
     [kubernetes]
     airflow_configmap = airflow-configmap
-    worker_container_repository = 940019131157.dkr.ecr.us-west-2.amazonaws.com/airflow-eks-demo
+    worker_container_repository = 542082525742.dkr.ecr.us-west-2.amazonaws.com/airflow-eks-demo
     worker_container_tag = latest
     worker_container_image_pull_policy = Always
     worker_service_account_name = airflow
