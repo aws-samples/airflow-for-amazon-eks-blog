@@ -210,7 +210,7 @@ export AOK_RDS_ENDPOINT=$(aws rds describe-db-instances \
   --output text)
 
 printf "Creating an SQL connection string....\n"
-export AOK_SQL_ALCHEMY_CONN=$(echo -n postgresql://airflowadmin:supersecretpassword@${AOK_RDS_ENDPOINT}:5432/airflow | base64)
+export AOK_SQL_ALCHEMY_CONN=$(echo -n postgresql://airflowadmin:supersecretpassword@${AOK_RDS_ENDPOINT}:5432/airflow | base64 -w 0)
 
 export AOK_AIRFLOW_REPOSITORY=$(aws ecr create-repository \
   --repository-name airflow-eks-demo \
