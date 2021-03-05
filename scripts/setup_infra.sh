@@ -43,7 +43,7 @@ cat << EOF > cluster-autoscaler-policy.json
 EOF
 
 printf "Creating the IAM policy...\n"
-AmazonEKSClusterAutoscalerPolicy=(aws iam create-policy \
+export AmazonEKSClusterAutoscalerPolicy=$(aws iam create-policy \
   --policy-name AmazonEKSClusterAutoscalerPolicy \
   --policy-document file://cluster-autoscaler-policy.json)
 
