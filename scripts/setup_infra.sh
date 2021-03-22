@@ -210,7 +210,28 @@ export AOK_RDS_ENDPOINT=$(aws rds describe-db-instances \
   --output text)
 
 printf "Creating an SQL connection string....\n"
-export AOK_SQL_ALCHEMY_CONN=$(echo -n postgresql://airflowadmin:supersecretpassword@${AOK_RDS_ENDPOINT}:5432/airflow | base64)
+
+_UNAME_OUT=$(uname -s)
+case "${_UNAME_OUT}" in
+    Linux*)     _MY_OS=linux;;
+    Darwin*)    _MY_OS=darwin;;
+    *)          echo "${_UNAME_OUT} is unsupported."
+                exit 1;;
+esac
+echo "Local OS is ${_MY_OS}"
+
+case $_MY_OS in
+  linux)
+    export AOK_SQL_ALCHEMY_CONN=$(echo -n postgresql://airflowadmin:supersecretpassword@${AOK_RDS_ENDPOINT}:5432/airflow | base64 -w 0)
+  ;;
+  darwin)
+    export AOK_SQL_ALCHEMY_CONN=$(echo -n postgresql://airflowadmin:supersecretpassword@${AOK_RDS_ENDPOINT}:5432/airflow | base64)
+  ;;
+  *)
+    echo "${_UNAME_OUT} is unsupported."
+    exit 1
+  ;;
+esac
 
 export AOK_AIRFLOW_REPOSITORY=$(aws ecr create-repository \
   --repository-name airflow-eks-demo \
