@@ -29,8 +29,10 @@ RUN apt-get update -y && apt-get install -y \
 RUN pip install --upgrade pip
 
 RUN pip install apache-airflow==1.10.10
+RUN pip install SQLAlchemy==1.3.15
 RUN pip install 'apache-airflow[kubernetes]'
 RUN pip install 'apache-airflow[postgres]'
+
 
 COPY airflow-test-env-init.sh /tmp/airflow-test-env-init.sh
 
