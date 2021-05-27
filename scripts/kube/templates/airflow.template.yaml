@@ -87,10 +87,11 @@ spec:
       #    this will be in the Packer image
       # 2. Launch EKS with image. Create Kubernetes deployment that passes args with which processes to start
       # 3. Container executes startup script and starts specified processes
+      # POC Goal: Verify above option would work
       # Redis: 
       # Right now this runs on the leader node. If we have multiple containers this may be hard to 
       # manage as the host/port may be changing https://github.com/udemy/ansible/blob/master/roles/airflow/templates/airflow.cfg.j2#L15
-      # May be best to run Redis on own EC2 instance since it is stateful
+      # EKS preparation step: Run Redis on own EC2 instance since it is stateful
       - name: "init"
         image: {{AIRFLOW_IMAGE}}:{{AIRFLOW_TAG}}
         imagePullPolicy: Always

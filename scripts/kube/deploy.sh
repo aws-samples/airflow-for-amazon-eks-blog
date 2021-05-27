@@ -154,6 +154,7 @@ kubectl apply -f $DIRNAME/secrets.yaml
 kubectl apply -f $BUILD_DIRNAME/configmaps.yaml
 kubectl apply -f $DIRNAME/volumes.yaml
 kubectl apply -f $BUILD_DIRNAME/airflow.yaml
+
 # Note:
 # Deploys
 # It seems like there are 3 deploy scenarios
@@ -166,6 +167,9 @@ kubectl apply -f $BUILD_DIRNAME/airflow.yaml
 # 3. Create a Dockerfile for data-pipelines. We can leverage this https://github.com/udemy/data-pipelines/blob/master/docker/Dockerfile
 # 4. Use Dockerfile as image for Kubernetes deployment
 # 5. During data-pipelines deployment, a. Build new Docker image and push to ECR 2. Run kubectl set image <latest image>
+# POC Goal: Understand how Ansible-built Packer images interact with Dockerfile built images
+# POC Goal: Test data-pipelines deloyment option above
+# POC Goal: Understand how each deploy type above impacts uptime
 
 # wait for up to 10 minutes for everything to be deployed
 PODS_ARE_READY=0
