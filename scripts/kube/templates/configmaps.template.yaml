@@ -20,6 +20,8 @@ metadata:
   name: airflow-configmap
   namespace: airflow
 data:
+  # Note: V1 could be keeping as we have today so would be baked into base image.
+  # Not sure of the benefit of managing as ConfigMap
   airflow.cfg: |
     [core]
     dags_folder = {{CONFIGMAP_DAGS_FOLDER}}

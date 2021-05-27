@@ -19,7 +19,8 @@
 
 set -x
 
-echo "Airflow Image Repo" $AOK_AIRFLOW_REPOSITORY
+echo "Airflow Image Repo" $AOK_AIRFLOW_REPOSITORY 
+# Note: Create ECR repo here https://github.com/udemy/infrastructure-terraform/blob/master/sandbox-di-useast1/terraform.tfvars#L43
 echo "EFS File System ID" $AOK_EFS_FS_ID
 echo "EFS Access Point" $AOK_EFS_AP
 echo "RDS SQL Connection String" $AOK_SQL_ALCHEMY_CONN
@@ -153,7 +154,18 @@ kubectl apply -f $DIRNAME/secrets.yaml
 kubectl apply -f $BUILD_DIRNAME/configmaps.yaml
 kubectl apply -f $DIRNAME/volumes.yaml
 kubectl apply -f $BUILD_DIRNAME/airflow.yaml
-
+# Note:
+# Deploys
+# It seems like there are 3 deploy scenarios
+# Ansbile Kubernetes file change => Run kubectl apply
+# Other Ansible change => Build image with Packer, push to ECR, run kubectl apply
+# data-pipelines change => I am not exactly sure how this would work but here's one draft idea inspired
+# by website-django https://udemy.slack.com/archives/C1MESPDAN/p1622069504140000
+# 1. Separate data-pipelines from udemy_release_datainfra_bot as it's own role and remove from Airflow playbook
+# 2. Build image with Packer/Ansible and use to launch EKS worker group
+# 3. Create a Dockerfile for data-pipelines. We can leverage this https://github.com/udemy/data-pipelines/blob/master/docker/Dockerfile
+# 4. Use Dockerfile as image for Kubernetes deployment
+# 5. During data-pipelines deployment, a. Build new Docker image and push to ECR 2. Run kubectl set image <latest image>
 
 # wait for up to 10 minutes for everything to be deployed
 PODS_ARE_READY=0

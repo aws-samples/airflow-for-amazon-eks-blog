@@ -1,4 +1,5 @@
-
+# Note: To start we can do what we're doing today--on-demand instance with same type we're using today.
+# Can create our own worker group here https://github.com/udemy/infrastructure-terraform/blob/master/sandbox-di-useast1/eks.auto.tfvars#L26
 affinity = {
     'nodeAffinity': {
         'requiredDuringSchedulingIgnoredDuringExecution': [

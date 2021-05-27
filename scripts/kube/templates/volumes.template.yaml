@@ -19,6 +19,8 @@
 # I'm using hostPath since minikube is nice for testing, but any (non-local) volume will work on a real cluster
 # apiVersion: storage.k8s.io/v1beta1
 apiVersion: storage.k8s.io/v1beta1
+# Note: V1 could potentially skip adding volumes. V1 could use EBS since current EKS cluster has that
+# as default. Not sure of benefits of using EFS. More details https://docs.aws.amazon.com/eks/latest/userguide/storage.html
 kind: CSIDriver
 metadata:
   name: efs.csi.aws.com

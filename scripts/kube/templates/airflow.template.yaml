@@ -78,6 +78,18 @@ spec:
                 values:
                 - Ec2Spot
       initContainers:
+      # Note: 
+      # Process management:
+      # This runs the scheduler and web server in different containers. Perhaps as V1 we could
+      # run everything in one container. V2 we could separate all process (scheduler, web server, flower, workers) 
+      # into different containers. How it could work below
+      # 1. Build Packer image with systemd files that do not start processes. 
+      #    Create start startup script that executes on launch and takes parameters
+      # 2. Kubernetes launches container with Packer image and takes args configured in this file
+      # 3. Container executes startup script with parameters (which processes to run)
+      # Regarding Redis, right now this runs on the leader node. If we have multiple containers this
+      # may be hard to manage as the host/port may be changing https://github.com/udemy/ansible/blob/master/roles/airflow/templates/airflow.cfg.j2#L15
+      # For V2 may be best to move Redis to an EC2 instance since it is stateful 
       - name: "init"
         image: {{AIRFLOW_IMAGE}}:{{AIRFLOW_TAG}}
         imagePullPolicy: Always
