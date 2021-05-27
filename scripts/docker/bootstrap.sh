@@ -19,7 +19,6 @@
 
 # launch the appropriate process
 
-# Note: We can add startup script like this to Packer image built with Ansible
 if [ "$1" = "webserver" ]
 then
 	exec airflow webserver

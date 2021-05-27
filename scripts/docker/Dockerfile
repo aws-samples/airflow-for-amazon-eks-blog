@@ -15,7 +15,6 @@
 #  specific language governing permissions and limitations      *
 #  under the License.                                           *
 
-# Note: Don't need. We can use image built with Packer and Ansible
 FROM python:3.6-slim
 
 # install deps

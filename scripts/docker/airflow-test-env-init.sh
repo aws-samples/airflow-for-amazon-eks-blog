@@ -17,7 +17,6 @@
 #  specific language governing permissions and limitations      *
 #  under the License.
 
-# Note: Don't need
 set -e
 
 cd /usr/local/lib/python3.6/site-packages/airflow && \
